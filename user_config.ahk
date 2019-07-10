@@ -40,3 +40,13 @@
 #+7::MoveCurrentWindowToDesktop(7)
 #+8::MoveCurrentWindowToDesktop(8)
 #+9::MoveCurrentWindowToDesktop(9)
+
++#q::closeWindow()
+
+;#f::toggleMaximize()
+
+; WSL -- create shortcut by dragging from start menu (can't be from a search result)
+#Enter::Run, C:\window-mover.git\Debian GNU-Linux
+
+; PowerShell
+#+Enter::Run, powershell

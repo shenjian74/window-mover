@@ -56,13 +56,13 @@ mapDesktopsFromRegistry()
     while (CurrentDesktopId and i < DesktopCount) {
         StartPos := (i * IdLength) + 1
         DesktopIter := SubStr(DesktopList, StartPos, IdLength)
-        OutputDebug, The iterator is pointing at %DesktopIter% and count is %i%.
+        ;OutputDebug, The iterator is pointing at %DesktopIter% and count is %i%.
 
         ; Break out if we find a match in the list. If we didn't find anything, keep the
         ; old guess and pray we're still correct :-D.
         if (DesktopIter = CurrentDesktopId) {
             CurrentDesktop := i + 1
-            OutputDebug, Current desktop number is %CurrentDesktop% with an ID of %DesktopIter%.
+            ;OutputDebug, Current desktop number is %CurrentDesktop% with an ID of %DesktopIter%.
             break
         }
         i++
@@ -90,16 +90,46 @@ getSessionId()
     return SessionId
 }
 
+
+;
+; This function creates a new virtual desktop and switches to it
+;
+createVirtualDesktop()
+{
+    global CurrentDesktop, DesktopCount
+    Send, #^d
+    DesktopCount++
+    CurrentDesktop := DesktopCount
+    OutputDebug, [create] desktops: %DesktopCount% current: %CurrentDesktop%
+}
+
+
+_createEnoughDesktops(targetDesktop) {
+    global DesktopCount
+
+    ; Create virtual desktop if it does not exist
+    while (targetDesktop > DesktopCount) {
+        createVirtualDesktop()
+    }
+    return
+}
+
 _switchDesktopToTarget(targetDesktop)
 {
     ; Globals variables should have been updated via updateGlobalVariables() prior to entering this function
     global CurrentDesktop, DesktopCount
 
     ; Don't attempt to switch to an invalid desktop
-    if (targetDesktop > DesktopCount || targetDesktop < 1 || targetDesktop == CurrentDesktop) {
+    if (targetDesktop < 1) {
         OutputDebug, [invalid] target: %targetDesktop% current: %CurrentDesktop%
         return
     }
+
+    if (targetDesktop == CurrentDesktop) {
+        return
+    }
+
+    _createEnoughDesktops(targetDesktop)
 
     ; Fixes the issue of active windows in intermediate desktops capturing the switch shortcut and therefore delaying or stopping the switching sequence. This also fixes the flashing window button after switching in the taskbar. More info: https://github.com/pmb6tz/windows-desktop-switcher/pull/19
     WinActivate, ahk_class Shell_TrayWnd
@@ -108,14 +138,14 @@ _switchDesktopToTarget(targetDesktop)
     while(CurrentDesktop < targetDesktop) {
         Send {LWin down}{LCtrl down}{Right down}{LWin up}{LCtrl up}{Right up}
         CurrentDesktop++
-        OutputDebug, [right] target: %targetDesktop% current: %CurrentDesktop%
+        ;OutputDebug, [right] target: %targetDesktop% current: %CurrentDesktop%
     }
 
     ; Go left until we reach the desktop we want
     while(CurrentDesktop > targetDesktop) {
         Send {LWin down}{LCtrl down}{Left down}{Lwin up}{LCtrl up}{Left up}
         CurrentDesktop--
-        OutputDebug, [left] target: %targetDesktop% current: %CurrentDesktop%
+        ;OutputDebug, [left] target: %targetDesktop% current: %CurrentDesktop%
     }
 
     ; Makes the WinActivate fix less intrusive
@@ -159,8 +189,39 @@ getForemostWindowIdOnDesktop(n)
     }
 }
 
+
 MoveCurrentWindowToDesktop(desktopNumber) {
     WinGet, activeHwnd, ID, A
+    
+    _createEnoughDesktops(desktopNumber)
     DllCall(MoveWindowToDesktopNumberProc, UInt, activeHwnd, UInt, desktopNumber - 1)
+
+    ;OutputDebug, Moving current window %activeHwnd% to %desktopNumber%
+
+    ;output := DllCall(MoveWindowToDesktopNumberProc, UInt, activeHwnd, UInt, desktopNumber - 1)
+    ;if output {
+    ;    OutputDebug, success
+    ;} else {
+    ;    OutputDebug, failed
+    ;}
+
     switchDesktopByNumber(desktopNumber)
+    WinActivate, ahk_id activeHwnd
+}
+
+closeWindow(){
+    global CurrentDesktop
+
+    WinClose, A
+    focusTheForemostWindow(CurrentDesktop)
+}
+
+toggleMaximize(){
+    WinGet, maximized, MinMax, A
+
+    if maximized {
+        WinRestore A
+    } else {
+        WinMaximize A
+    }
 }

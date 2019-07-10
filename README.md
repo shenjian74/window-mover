@@ -1,51 +1,19 @@
-# TODO
-- add the "create enough desktops" function from the sway copy? that way you can always use the right number
-- do a diff and see what's missing!
+# window-mover
 
+Forked from [pmb6tz/windows-desktop-switcher](https://github.com/pmb6tz/windows-desktop-switcher) and [Depau/swin](https://github.com/Depau/swin), to minimally reproduce some desirable i3/sway-like behavior on Windows.
 
-# windows-desktop-switcher
-An AutoHotkey script for Windows that lets a user change virtual desktops by pressing CapsLock + &lt;num> or other custom key combination. It also provides other features, such as creation/deletion of desktops by hotkey, etc. (see Hotkeys section below).
+- Switch to virtual desktops 1-9 using `⊞-#` and backfill # of desktops if needed
+- Move active windows to virtual desktops 1-9 using `⊞-shift-#` and backfill desktops if needed
+- Close windows with `⊞-shift-q`
+- Open WSL with `⊞-enter` (need to create and edit link in user_config.ahk)
+- Open PowerShell with `⊞-shift-enter`
 
-## Overview
-This script creates more convenient hotkeys for switching virtual desktops in Windows 10. I built this to better mirror the mapping I use on linux (with dwm), and it's always annoyed me that Windows does not have better hotkey support for this feature (for instance, there's no way to go directly to a desktop by number).
+# Dependencies
 
-Note, CapsLock will function normally even when using it as a modifier.
+- Windows 10
+- [AutoHotkey](https://autohotkey.com/download/) v1.1+
+- [VirtualDesktopAccessor.dll](https://github.com/Ciantic/VirtualDesktopAccessor)
 
-## Issues on Windows ≥1809/1903 Updates
-This project relies partly on [VirtualDesktopAccessor.dll](https://github.com/Ciantic/VirtualDesktopAccessor) (for moving windows to other desktops). This binary is included in this repository for convenience, and was recently updated to work with the ≥1809/1903 updates. 
-
-This may cause instability for users running older versions of Windows. If this is the case, [download the older DLL](https://github.com/pmb6tz/windows-desktop-switcher/blob/5289a0968179638f6e946a4cb69723510abd0d19/virtual-desktop-accessor.dll), rename it to `VirtualDesktopAccessor.dll`, and overwrite the previous DLL.
-
-If a future Windows Update breaks the DLL again and updating your files from this repository doesn't work, you could try [building the DLL yourself](https://github.com/Ciantic/VirtualDesktopAccessor) (given that it was since updated by its' creators).
-
-## Running
-[Install AutoHotkey](https://autohotkey.com/download/) v1.1 or later, then run the `desktop_switcher.ahk` script (open with AutoHotkey if prompted). 
-
-## Default Hotkeys
-        <CapsLock> + <Num>      - Switches to virtual desktop "num", e.g. <CapsLock> + 1
-        <CapsLock> + Tab        - Switches back to the last desktop used
-        <CapsLock> + C          - Create a new virtual desktop
-        <CapsLock> + D          - Delete the current virtual desktop
-        <CapsLock> + A or P     - Switch to virtual desktop on left (also cycles from the first to the last desktop)
-        <CapsLock> + S or N     - Switch to virtual desktop on right (also cycles from the last to the first desktop)
-        <CapsLock> + <Num>      - Switches to virtual desktop "num", e.g. <CapsLock> + 1
-        <CapsLock> + <Letter>   - Moves the current window to another desktop, then switches to it. 
-                                  Use letters Q, W, E, R, T, Y, U, I, O.
-                                  (e.g. <CapsLock> + <Q> moves to the first desktop
-                                  	    <CapsLock> + <W> moves to the second desktop, etc.)
-
-Using `Ctrl + Alt` instead of `CapsLock` also works, without any additional changes necessary (e.g. use `<Ctrl> + <Alt> + 1` to switch to the Desktop 1, just as you would use `<CapsLock> + 1`)
-
-## Customizing Hotkeys
-To change the key mappings, modify the `user_config.ahk` script and then run `desktop_switcher.ahk` (program will restart if it's already running). Note, `!` corresponds to `Alt`, `+` is `Shift`, `#` is `Win`, and `^` is `Ctrl`. The syntax of the config file is `HOTKEY::ACTION`. Here are some of the examples of customization options. 
-
-```
-!n::switchDesktopToRight()             <- <Alt> + <N> will switch to the desktop on the right
-#!space::switchDesktopToRight()        <- <Win> + <Alt> + <Space> will switch to the desktop on the right
-CapsLock & n::switchDesktopToRight()   <- <CapsLock> + <N> will switch to the next desktop (& is necessary when using non-modifier key such as CapsLock)
-```
-
-For more detailed description of hotkeys check out [AutoHotkey docs](https://autohotkey.com/docs/Hotkeys.htm).
 
 ## Running on boot
 
@@ -75,11 +43,6 @@ Register-ScheduledTask WindowsDesktopSwitcher -InputObject $D
 
 The task is now registered and will run on the next logon, and can be viewed or modified in 'Task Scheduler'. 
 
-## Credits
+## Original credits
 
 - Thanks to [Ciantic/VirtualDesktopAccessor](https://github.com/Ciantic/VirtualDesktopAccessor) (for the DLL) and [sdias/win-10-virtual-desktop-enhancer](https://github.com/sdias/win-10-virtual-desktop-enhancer) (for the DLL usage samples) our code can move windows between desktops.
-
-## Other
-To see debug messages, download [SysInternals DebugView](https://technet.microsoft.com/en-us/sysinternals/debugview).
-
-This script is intended to be lightweight in order to prioritize performance and robustness. For more advanced features (such as configuring different wallpapers on different desktops) check out https://github.com/sdias/win-10-virtual-desktop-enhancer.
