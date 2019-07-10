@@ -1,3 +1,8 @@
+# TODO
+- add the "create enough desktops" function from the sway copy? that way you can always use the right number
+- do a diff and see what's missing!
+
+
 # windows-desktop-switcher
 An AutoHotkey script for Windows that lets a user change virtual desktops by pressing CapsLock + &lt;num> or other custom key combination. It also provides other features, such as creation/deletion of desktops by hotkey, etc. (see Hotkeys section below).
 

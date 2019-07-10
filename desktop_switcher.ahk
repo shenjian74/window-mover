@@ -7,7 +7,6 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 ; Globals
 DesktopCount := 2        ; Windows starts with 2 desktops at boot
 CurrentDesktop := 1      ; Desktop count is 1-indexed (Microsoft numbers them this way)
-LastOpenedDesktop := 1
 
 ; DLL
 hVirtualDesktopAccessor := DllCall("LoadLibrary", "Str", A_ScriptDir . "\VirtualDesktopAccessor.dll", "Ptr")
@@ -94,15 +93,13 @@ getSessionId()
 _switchDesktopToTarget(targetDesktop)
 {
     ; Globals variables should have been updated via updateGlobalVariables() prior to entering this function
-    global CurrentDesktop, DesktopCount, LastOpenedDesktop
+    global CurrentDesktop, DesktopCount
 
     ; Don't attempt to switch to an invalid desktop
     if (targetDesktop > DesktopCount || targetDesktop < 1 || targetDesktop == CurrentDesktop) {
         OutputDebug, [invalid] target: %targetDesktop% current: %CurrentDesktop%
         return
     }
-
-    LastOpenedDesktop := CurrentDesktop
 
     ; Fixes the issue of active windows in intermediate desktops capturing the switch shortcut and therefore delaying or stopping the switching sequence. This also fixes the flashing window button after switching in the taskbar. More info: https://github.com/pmb6tz/windows-desktop-switcher/pull/19
     WinActivate, ahk_class Shell_TrayWnd
@@ -140,27 +137,6 @@ switchDesktopByNumber(targetDesktop)
     _switchDesktopToTarget(targetDesktop)
 }
 
-switchDesktopToLastOpened()
-{
-    global CurrentDesktop, DesktopCount, LastOpenedDesktop
-    updateGlobalVariables()
-    _switchDesktopToTarget(LastOpenedDesktop)
-}
-
-switchDesktopToRight()
-{
-    global CurrentDesktop, DesktopCount
-    updateGlobalVariables()
-    _switchDesktopToTarget(CurrentDesktop == DesktopCount ? 1 : CurrentDesktop + 1)
-}
-
-switchDesktopToLeft()
-{
-    global CurrentDesktop, DesktopCount
-    updateGlobalVariables()
-    _switchDesktopToTarget(CurrentDesktop == 1 ? DesktopCount : CurrentDesktop - 1)
-}
-
 focusTheForemostWindow(targetDesktop) 
 {
     foremostWindowId := getForemostWindowIdOnDesktop(targetDesktop)
@@ -187,31 +163,4 @@ MoveCurrentWindowToDesktop(desktopNumber) {
     WinGet, activeHwnd, ID, A
     DllCall(MoveWindowToDesktopNumberProc, UInt, activeHwnd, UInt, desktopNumber - 1)
     switchDesktopByNumber(desktopNumber)
-}
-
-;
-; This function creates a new virtual desktop and switches to it
-;
-createVirtualDesktop()
-{
-    global CurrentDesktop, DesktopCount
-    Send, #^d
-    DesktopCount++
-    CurrentDesktop := DesktopCount
-    OutputDebug, [create] desktops: %DesktopCount% current: %CurrentDesktop%
-}
-
-;
-; This function deletes the current virtual desktop
-;
-deleteVirtualDesktop()
-{
-    global CurrentDesktop, DesktopCount, LastOpenedDesktop
-    Send, #^{F4}
-    if (LastOpenedDesktop >= CurrentDesktop) {
-        LastOpenedDesktop--
-    }
-    DesktopCount--
-    CurrentDesktop--
-    OutputDebug, [delete] desktops: %DesktopCount% current: %CurrentDesktop%
 }
