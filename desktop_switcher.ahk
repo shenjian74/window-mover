@@ -153,7 +153,7 @@ _switchDesktopToTarget(targetDesktop)
     focusTheForemostWindow(targetDesktop)
 }
 
-updateGlobalVariables() 
+updateGlobalVariables()
 {
     ; Re-generate the list of desktops and where we fit in that. We do this because
     ; the user may have switched desktops via some other means than the script.
@@ -189,9 +189,11 @@ getForemostWindowIdOnDesktop(n)
     }
 }
 
-
 MoveCurrentWindowToDesktop(desktopNumber) {
+    global CurrentDesktop, DesktopCount
     WinGet, activeHwnd, ID, A
+
+    ;updateGlobalVariables()
     
     _createEnoughDesktops(desktopNumber)
     DllCall(MoveWindowToDesktopNumberProc, UInt, activeHwnd, UInt, desktopNumber - 1)
@@ -205,8 +207,10 @@ MoveCurrentWindowToDesktop(desktopNumber) {
     ;    OutputDebug, failed
     ;}
 
-    switchDesktopByNumber(desktopNumber)
-    WinActivate, ahk_id activeHwnd
+    ;switchDesktopByNumber(desktopNumber)
+    ;WinActivate, ahk_id activeHwnd
+    
+    focusTheForemostWindow(CurrentDesktop)
 }
 
 closeWindow(){
