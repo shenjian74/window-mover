@@ -1,3 +1,4 @@
+;see https://autohotkey.com/board/topic/3248-stuck-ctrl-key/ if issues with keys sticking
 #SingleInstance Force ; The script will Reload if launched while already running
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases
 #KeyHistory 0 ; Ensures user privacy when debugging is not needed
