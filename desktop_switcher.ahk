@@ -13,6 +13,7 @@ CurrentDesktop := 1      ; Desktop count is 1-indexed (Microsoft numbers them th
 hVirtualDesktopAccessor := DllCall("LoadLibrary", "Str", A_ScriptDir . "\VirtualDesktopAccessor.dll", "Ptr")
 global IsWindowOnDesktopNumberProc := DllCall("GetProcAddress", Ptr, hVirtualDesktopAccessor, AStr, "IsWindowOnDesktopNumber", "Ptr")
 global MoveWindowToDesktopNumberProc := DllCall("GetProcAddress", Ptr, hVirtualDesktopAccessor, AStr, "MoveWindowToDesktopNumber", "Ptr")
+global GoToDesktopNumberProc := DllCall("GetProcAddress", Ptr, hVirtualDesktopAccessor, AStr, "GoToDesktopNumber", "Ptr")
 
 ; Main
 SetKeyDelay, 75
@@ -119,7 +120,7 @@ _switchDesktopToTarget(targetDesktop)
 {
     ; Globals variables should have been updated via updateGlobalVariables() prior to entering this function
     global CurrentDesktop, DesktopCount
-
+    
     ; Don't attempt to switch to an invalid desktop
     if (targetDesktop < 1) {
         OutputDebug, [invalid] target: %targetDesktop% current: %CurrentDesktop%
@@ -135,19 +136,7 @@ _switchDesktopToTarget(targetDesktop)
     ; Fixes the issue of active windows in intermediate desktops capturing the switch shortcut and therefore delaying or stopping the switching sequence. This also fixes the flashing window button after switching in the taskbar. More info: https://github.com/pmb6tz/windows-desktop-switcher/pull/19
     WinActivate, ahk_class Shell_TrayWnd
 
-    ; Go right until we reach the desktop we want
-    while(CurrentDesktop < targetDesktop) {
-        Send {LWin down}{LCtrl down}{Right down}{LWin up}{LCtrl up}{Right up}
-        CurrentDesktop++
-        ;OutputDebug, [right] target: %targetDesktop% current: %CurrentDesktop%
-    }
-
-    ; Go left until we reach the desktop we want
-    while(CurrentDesktop > targetDesktop) {
-        Send {LWin down}{LCtrl down}{Left down}{Lwin up}{LCtrl up}{Left up}
-        CurrentDesktop--
-        ;OutputDebug, [left] target: %targetDesktop% current: %CurrentDesktop%
-    }
+    DllCall(GoToDesktopNumberProc, UInt, targetDesktop - 1)
 
     ; Makes the WinActivate fix less intrusive
     Sleep, 50
