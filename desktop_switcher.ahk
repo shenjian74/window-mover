@@ -19,10 +19,18 @@ global GoToDesktopNumberProc := DllCall("GetProcAddress", Ptr, hVirtualDesktopAc
 ; Main
 SetKeyDelay, 75
 mapDesktopsFromRegistry()
+changeIcon(CurrentDesktop)
 OutputDebug, [loading] desktops: %DesktopCount% current: %CurrentDesktop%
 
 #Include %A_ScriptDir%\user_config.ahk
 return
+
+;
+; This changes the icon
+changeIcon(targetDesktop)
+{
+    Menu, Tray, Icon, numbers/%targetDesktop%.ico
+}
 
 ;
 ; This function examines the registry to build an accurate list of the current virtual desktops and which one we're currently on.
@@ -143,6 +151,8 @@ _switchDesktopToTarget(targetDesktop)
     WinActivate, ahk_class Shell_TrayWnd
 
     DllCall(GoToDesktopNumberProc, UInt, targetDesktop - 1)
+    
+    changeIcon(targetDesktop)
 
     ; Makes the WinActivate fix less intrusive
     Sleep, 50
