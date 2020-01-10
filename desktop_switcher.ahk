@@ -130,8 +130,10 @@ _switchDesktopToTarget(targetDesktop)
         return
     }
 
-    if (targetDesktop == CurrentDesktop && PreviousDesktop != CurrentDesktop) {
-        _switchDesktopToTarget(PreviousDesktop)
+    if (targetDesktop == CurrentDesktop) {
+        if(PreviousDesktop != CurrentDesktop){
+            _switchDesktopToTarget(PreviousDesktop)
+        }
         return
     }
 
