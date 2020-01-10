@@ -12,14 +12,12 @@
 ; #   <- Win
 ; For more, visit https://autohotkey.com/docs/Hotkeys.htm
 
-; === EXAMPLES ===
-; !n::switchDesktopToRight()             <- <Alt> + <N> will switch to the next desktop (to the right of the current one)
-; #!space::switchDesktopToRight()        <- <Win> + <Alt> + <Space> will switch to next desktop
-; CapsLock & n::switchDesktopToRight()   <- <CapsLock> + <N> will switch to the next desktop (& is necessary when using non-modifier key such as CapsLock)
-
 ; ===========================
 ; === END OF INSTRUCTIONS ===
 ; ===========================
+
+#Left::switchDesktopToLeft()
+#Right::switchDesktopToRight()
 
 #1::switchDesktopByNumber(1)
 #2::switchDesktopByNumber(2)
@@ -43,10 +41,10 @@
 
 +#q::closeWindow()
 
-;#f::toggleMaximize()
+#+Space::toggleMaximize()
 
 ; WSL -- create shortcut by dragging from start menu (can't be from a search result)
-#Enter::Run, C:\window-mover.git\Debian GNU-Linux
+;#Enter::Run, C:\window-mover.git\Debian GNU-Linux
 
 ; PowerShell
-#+Enter::Run, powershell
+#Enter::Run, powershell
