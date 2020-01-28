@@ -22,7 +22,7 @@ You can make the script run on every boot with either of these methods.
 ### Simple (Non-administrator method)
 
 1. Press `Win + R`, enter `shell:startup`, press `OK`
-2. Create a shortcut to the `desktop_switcher.ahk` file here
+2. Create a shortcut to the `window-mover.ahk` file here
 
 ### Advanced (Administrator method)
 
