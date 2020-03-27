@@ -176,7 +176,14 @@ switchDesktopByNumber(targetDesktop)
 focusTheForemostWindow(targetDesktop) 
 {
     foremostWindowId := getForemostWindowIdOnDesktop(targetDesktop)
-    WinActivate, ahk_id %foremostWindowId%
+    if isWindowNonMinimized(foremostWindowId) {
+        WinActivate, ahk_id %foremostWindowId%
+    }
+}
+
+isWindowNonMinimized(windowId) {
+    WinGet MMX, MinMax, ahk_id %windowId%
+    return MMX != -1
 }
 
 getForemostWindowIdOnDesktop(n)
