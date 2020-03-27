@@ -3,10 +3,10 @@
 Forked from [pmb6tz/windows-desktop-switcher](https://github.com/pmb6tz/windows-desktop-switcher) and [Depau/swin](https://github.com/Depau/swin), to minimally reproduce some desirable i3/sway-like behavior on Windows.
 
 - Switch to virtual desktops 1-9 using `⊞-#` and backfill # of desktops if needed
+    - Press the hotkey for the same virtual desktop you are already on to switch back to the previous one
 - Move active windows to virtual desktops 1-9 using `⊞-shift-#` and backfill desktops if needed
 - Close windows with `⊞-shift-q`
-- Open WSL with `⊞-enter` (need to create and edit link in user_config.ahk)
-- Open PowerShell with `⊞-shift-enter`
+- Open [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal-preview/9n0dx20hk701) with `⊞-enter`
 
 # Dependencies
 
