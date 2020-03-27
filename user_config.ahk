@@ -48,8 +48,8 @@
 ; WSL -- create shortcut by dragging from start menu (can't be from a search result)
 ;#Enter::Run, C:\window-mover.git\Debian GNU-Linux
 
-; Windows Terminal, defaulting to WSL
-#Enter::Run, C:\Users\jnoynaert\AppData\Local\Microsoft\WindowsApps\wt.exe
+; Windows Terminal
+#Enter::Run, wt
 
 ; PowerShell
 #+Enter::Run, powershell
