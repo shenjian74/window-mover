@@ -12,11 +12,6 @@
 ; #   <- Win
 ; For more, visit https://autohotkey.com/docs/Hotkeys.htm
 
-; === EXAMPLES ===
-; !n::switchDesktopToRight()             <- <Alt> + <N> will switch to the next desktop (to the right of the current one)
-; #!space::switchDesktopToRight()        <- <Win> + <Alt> + <Space> will switch to next desktop
-; CapsLock & n::switchDesktopToRight()   <- <CapsLock> + <N> will switch to the next desktop (& is necessary when using non-modifier key such as CapsLock)
-
 ; ===========================
 ; === END OF INSTRUCTIONS ===
 ; ===========================
@@ -50,6 +45,3 @@
 
 ; Windows Terminal
 #Enter::Run, wt
-
-; PowerShell
-#+Enter::Run, powershell
