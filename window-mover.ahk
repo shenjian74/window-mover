@@ -8,6 +8,7 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 ; Globals
 DesktopCount := 2        ; Windows starts with 2 desktops at boot
 CurrentDesktop := 1      ; Desktop count is 1-indexed (Microsoft numbers them this way)
+PreviousDesktop := 1     ; Return Desktop
 
 ; DLL
 hVirtualDesktopAccessor := DllCall("LoadLibrary", "Str", A_ScriptDir . "\VirtualDesktopAccessor.dll", "Ptr")
@@ -18,10 +19,18 @@ global GoToDesktopNumberProc := DllCall("GetProcAddress", Ptr, hVirtualDesktopAc
 ; Main
 SetKeyDelay, 75
 mapDesktopsFromRegistry()
+changeIcon(CurrentDesktop)
 OutputDebug, [loading] desktops: %DesktopCount% current: %CurrentDesktop%
 
 #Include %A_ScriptDir%\user_config.ahk
 return
+
+;
+; This changes the icon
+changeIcon(targetDesktop)
+{
+    Menu, Tray, Icon, numbers/%targetDesktop%.ico
+}
 
 ;
 ; This function examines the registry to build an accurate list of the current virtual desktops and which one we're currently on.
@@ -30,7 +39,7 @@ return
 ;
 mapDesktopsFromRegistry() 
 {
-    global CurrentDesktop, DesktopCount
+    global PreviousDesktop, CurrentDesktop, DesktopCount
 
     ; Get the current desktop UUID. Length should be 32 always, but there's no guarantee this couldn't change in a later Windows release so we check.
     IdLength := 32
@@ -63,6 +72,7 @@ mapDesktopsFromRegistry()
         ; Break out if we find a match in the list. If we didn't find anything, keep the
         ; old guess and pray we're still correct :-D.
         if (DesktopIter = CurrentDesktopId) {
+            PreviousDesktop := CurrentDesktop
             CurrentDesktop := i + 1
             ;OutputDebug, Current desktop number is %CurrentDesktop% with an ID of %DesktopIter%.
             break
@@ -98,9 +108,10 @@ getSessionId()
 ;
 createVirtualDesktop()
 {
-    global CurrentDesktop, DesktopCount
+    global PreviousDesktop, CurrentDesktop, DesktopCount
     Send, #^d
     DesktopCount++
+    PreviousDesktop := CurrentDesktop
     CurrentDesktop := DesktopCount
     OutputDebug, [create] desktops: %DesktopCount% current: %CurrentDesktop%
 }
@@ -119,7 +130,7 @@ _createEnoughDesktops(targetDesktop) {
 _switchDesktopToTarget(targetDesktop)
 {
     ; Globals variables should have been updated via updateGlobalVariables() prior to entering this function
-    global CurrentDesktop, DesktopCount
+    global PreviousDesktop, CurrentDesktop, DesktopCount
     
     ; Don't attempt to switch to an invalid desktop
     if (targetDesktop < 1) {
@@ -128,6 +139,9 @@ _switchDesktopToTarget(targetDesktop)
     }
 
     if (targetDesktop == CurrentDesktop) {
+        if(PreviousDesktop != CurrentDesktop){
+            _switchDesktopToTarget(PreviousDesktop)
+        }
         return
     }
 
@@ -137,6 +151,8 @@ _switchDesktopToTarget(targetDesktop)
     WinActivate, ahk_class Shell_TrayWnd
 
     DllCall(GoToDesktopNumberProc, UInt, targetDesktop - 1)
+    
+    changeIcon(targetDesktop)
 
     ; Makes the WinActivate fix less intrusive
     Sleep, 50
