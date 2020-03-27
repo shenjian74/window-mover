@@ -1,6 +1,6 @@
 # window-mover
 
-Forked from [pmb6tz/windows-desktop-switcher](https://github.com/pmb6tz/windows-desktop-switcher) and [Depau/swin](https://github.com/Depau/swin), to minimally reproduce some desirable i3/sway-like behavior on Windows.
+Use autohotkey to minimally reproduce some desirable i3/sway-like behavior on Windows. Forked from [pmb6tz/windows-desktop-switcher](https://github.com/pmb6tz/windows-desktop-switcher) and [Depau/swin](https://github.com/Depau/swin).
 
 - Switch to virtual desktops 1-9 using `⊞-#` and backfill # of desktops if needed
     - Press the hotkey for the same virtual desktop you are already on to switch back to the previous one
@@ -19,12 +19,12 @@ Forked from [pmb6tz/windows-desktop-switcher](https://github.com/pmb6tz/windows-
 
 You can make the script run on every boot with either of these methods.
 
-### Simple (Non-administrator method)
+### Simple
 
 1. Press `Win + R`, enter `shell:startup`, press `OK`
 2. Create a shortcut to the `window-mover.ahk` file here
 
-### Advanced (Administrator method)
+### Enabling hotkeys within windows with elevated privileges
 
 Windows prevents hotkeys from working in windows that were launched with higher elevation than the AutoHotKey script (such as CMD or Powershell terminals that were launched as Administrator). As a result, Windows Desktop Switcher hotkeys will only work within these windows if the script itself is `Run as Administrator`, due to the way Windows is designed. 
 
