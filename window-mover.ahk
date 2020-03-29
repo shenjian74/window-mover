@@ -206,22 +206,10 @@ MoveCurrentWindowToDesktop(desktopNumber) {
     global CurrentDesktop, DesktopCount
     WinGet, activeHwnd, ID, A
 
-    ;updateGlobalVariables()
+    updateGlobalVariables()
     
     _createEnoughDesktops(desktopNumber)
     DllCall(MoveWindowToDesktopNumberProc, UInt, activeHwnd, UInt, desktopNumber - 1)
-
-    ;OutputDebug, Moving current window %activeHwnd% to %desktopNumber%
-
-    ;output := DllCall(MoveWindowToDesktopNumberProc, UInt, activeHwnd, UInt, desktopNumber - 1)
-    ;if output {
-    ;    OutputDebug, success
-    ;} else {
-    ;    OutputDebug, failed
-    ;}
-
-    ;switchDesktopByNumber(desktopNumber)
-    ;WinActivate, ahk_id activeHwnd
     
     focusTheForemostWindow(CurrentDesktop)
 }
