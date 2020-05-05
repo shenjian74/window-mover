@@ -44,4 +44,8 @@
 ;#Enter::Run, C:\window-mover.git\Debian GNU-Linux
 
 ; Windows Terminal
-#Enter::Run, wt
+#Enter::
+Run, wt ;start terminal
+Sleep, 600 ;wait for newest window to open
+WinActivate, jnoynaert ;just use a string that matches the start of the terminal window
+return
