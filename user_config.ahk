@@ -44,8 +44,24 @@
 ;#Enter::Run, C:\window-mover.git\Debian GNU-Linux
 
 ; Windows Terminal
+; see here for wt.exe args: https://docs.microsoft.com/en-us/windows/terminal/command-line-arguments?tabs=windows
+
+;WSL 1
 #Enter::
 Run, wt ;start terminal
 Sleep, 600 ;wait for newest window to open
-WinActivate, WSL ;just use a string that matches the start of the terminal window
+WinActivate, WSl1 ;just use a string that matches the start of the terminal window
+return
+
+;Powershell
+#+Enter::
+Run, wt -p "PowerShell"
+Sleep, 600
+WinActivate, PowerShell
+return
+
+#^Enter::
+Run, wt -p "WSL2 (Ubuntu)"
+Sleep, 600
+WinActivate, WSL2
 return
