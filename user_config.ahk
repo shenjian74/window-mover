@@ -49,19 +49,20 @@
 ;WSL 1
 #Enter::
 Run, wt ;start terminal
-Sleep, 600 ;wait for newest window to open
-WinActivate, WSl1 ;just use a string that matches the start of the terminal window
+Sleep, 750 ;wait for newest window to open
+WinActivate, WSL1 ;just use a string that matches the start of the terminal window
 return
 
 ;Powershell
 #+Enter::
-Run, wt -p "PowerShell"
-Sleep, 600
+Run, wt -p "PowerShell 5"
+Sleep, 750
 WinActivate, PowerShell
 return
 
+;WSL2
 #^Enter::
 Run, wt -p "WSL2 (Ubuntu)"
-Sleep, 600
+Sleep, 750
 WinActivate, WSL2
 return
