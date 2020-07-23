@@ -16,6 +16,8 @@
 ; === END OF INSTRUCTIONS ===
 ; ===========================
 
+SetWorkingDir, C:\ ;prevent secondary WT windows from opening in script dir
+
 #1::switchDesktopByNumber(1)
 #2::switchDesktopByNumber(2)
 #3::switchDesktopByNumber(3)
@@ -48,21 +50,21 @@
 
 ;WSL 1
 #Enter::
-Run, wt -d C:\ ;start terminal
+Run, wt ;start terminal
 Sleep, 750 ;wait for newest window to open
 WinActivate, WSL1 ;just use a string that matches the start of the terminal window
 return
 
 ;Powershell
 #+Enter::
-Run, wt -p "PowerShell 5" -d C:\
+Run, wt -p "PowerShell 5"
 Sleep, 750
 WinActivate, PowerShell
 return
 
 ;WSL2
 #^Enter::
-Run, wt -p "WSL2 (Ubuntu)" -d C:\
+Run, wt -p "WSL2 (Ubuntu)"
 Sleep, 750
 WinActivate, WSL2
 return

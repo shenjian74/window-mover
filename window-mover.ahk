@@ -29,7 +29,7 @@ return
 ; This changes the icon
 changeIcon(targetDesktop)
 {
-    Menu, Tray, Icon, numbers/%targetDesktop%.ico
+    Menu, Tray, Icon, %A_ScriptDir%/numbers/%targetDesktop%.ico
 }
 
 ;
