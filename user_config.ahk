@@ -36,7 +36,7 @@
 #+8::MoveCurrentWindowToDesktop(8)
 #+9::MoveCurrentWindowToDesktop(9)
 
-+#q::closeWindow()
+#q::closeWindow()
 
 ;#f::toggleMaximize()
 
@@ -48,21 +48,21 @@
 
 ;WSL 1
 #Enter::
-Run, wt ;start terminal
+Run, wt -d C:\ ;start terminal
 Sleep, 750 ;wait for newest window to open
 WinActivate, WSL1 ;just use a string that matches the start of the terminal window
 return
 
 ;Powershell
 #+Enter::
-Run, wt -p "PowerShell 5"
+Run, wt -p "PowerShell 5" -d C:\
 Sleep, 750
 WinActivate, PowerShell
 return
 
 ;WSL2
 #^Enter::
-Run, wt -p "WSL2 (Ubuntu)"
+Run, wt -p "WSL2 (Ubuntu)" -d C:\
 Sleep, 750
 WinActivate, WSL2
 return
