@@ -138,12 +138,12 @@ _switchDesktopToTarget(targetDesktop)
         return
     }
 
-    if (targetDesktop == CurrentDesktop) {
-        if(PreviousDesktop != CurrentDesktop){
-            _switchDesktopToTarget(PreviousDesktop)
-        }
-        return
-    }
+    ; if (targetDesktop == CurrentDesktop) {
+    ;     if(PreviousDesktop != CurrentDesktop){
+    ;         _switchDesktopToTarget(PreviousDesktop)
+    ;     }
+    ;     return
+    ; }
 
     _createEnoughDesktops(targetDesktop)
 
