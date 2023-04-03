@@ -40,6 +40,59 @@ SetWorkingDir, C:\ ;prevent secondary WT windows from opening in script dir
 
 #q::closeWindow()
 
+#0::
+WinGet, process, ProcessName, A
+; 1. 资源管理
+; 2. IM/Mail
+; 3. office
+; 4. si4
+; 5. edge
+; 6. text editor
+; 7. vscode
+if (process = "Explorer.EXE")
+{
+    vdesktop = 1
+}
+else if (process = "zMail.exe" or process = "iCenter.exe")
+{
+    vdesktop = 2
+}
+else if (process = "wps.exe" or process = "et.exe")
+{
+    vdesktop = 3
+}
+else if (process = "sourceinsight4.exe")
+{
+    vdesktop = 4
+}
+else if (process = "msedge.exe")
+{
+    vdesktop = 5
+}
+else if (process = "notepad.exe" or process = "notepad2.exe" or process = "BowPad.exe")
+{
+    vdesktop = 6
+}
+else if (process = "Code.exe")
+{
+    vdesktop = 7
+}
+else
+{
+    ToolTip, %process% not moved.
+    SetTimer, RemoveToolTip, -5000
+    return
+}
+MoveCurrentWindowToDesktop(vdesktop), switchDesktopByNumber(vdesktop)
+ToolTip, %process% has moved to vdesktop:%vdesktop%.
+SetTimer, RemoveToolTip, -5000
+return
+
+RemoveToolTip:
+ToolTip
+return
+
+
 ;#f::toggleMaximize()
 
 ; WSL -- create shortcut by dragging from start menu (can't be from a search result)
