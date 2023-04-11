@@ -1,4 +1,4 @@
-; ====================
+﻿; ====================
 ; === INSTRUCTIONS ===
 ; ====================
 ; 1. Any lines starting with ; are ignored
@@ -79,17 +79,17 @@ else if (process = "Code.exe")
 }
 else
 {
-    ToolTip, %process% not moved.
+    TrayTip, windows-mover, %process% not moved.
     SetTimer, RemoveToolTip, -5000
     return
 }
 MoveCurrentWindowToDesktop(vdesktop), switchDesktopByNumber(vdesktop)
-ToolTip, %process% has moved to vdesktop:%vdesktop%.
+TrayTip, windows-mover, %process% has moved to vdesktop:%vdesktop%.
 SetTimer, RemoveToolTip, -5000
 return
 
 RemoveToolTip:
-ToolTip
+TrayTip
 return
 
 
